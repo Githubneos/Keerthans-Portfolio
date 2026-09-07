@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  /* surfaces (light theme) */
+  --color-bg: #ffe0b5;
+  --color-surface: #f3d4ab; /* cream blended ~10% toward brown */
+  --color-surface-raised: #eacaa3; /* cream blended ~18% toward brown */
+  --color-espresso: #462521; /* dark band background */
+
+  /* text */
+  --color-ink: #462521;
+  --color-ink-on-dark: #ffe0b5;
+  --color-muted: #5a3830; /* ink blended ~30% toward brown; 8.1:1 on cream */
+  --color-faint: #6f4b3e; /* ink blended ~60% toward brown; 6.0:1 on cream, 4.9:1 on surface-raised */
+
+  /* accents */
+  --color-crimson: #ca2e55; /* headlines, buttons, borders, tags, waveform stop 1 -- not small text on cream */
+  --color-crimson-text: #b62d4d; /* crimson blended 15% toward espresso; 4.78:1 on cream -- links/small text */
+  --color-brown: #8a6552; /* borders, tags, secondary accent -- large/bold text only on cream (4.08:1) */
+  --color-olive: #bdb246; /* backgrounds, borders, tags, waveform stop 2 -- NEVER text on cream (1.72:1) */
+
+  /* hairline borders */
+  --color-hairline: rgb(70 37 33 / 14%);
+  --color-hairline-on-dark: rgb(255 224 181 / 16%);
+
+  /* type */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif-italic: "Source Serif 4 Variable", ui-serif, Georgia, serif;
+
+  /* layout rhythm */
+  --content-max: 68rem; /* ~1088px */
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-crimson);
+    outline-offset: 2px;
+  }
+}

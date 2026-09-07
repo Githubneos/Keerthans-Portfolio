@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Keerthan Karumudi — Skeptical Optimist</title>
+    <!--
+      GitHub Pages serves this file for any unmatched path (since Pages is
+      a static host with no server-side routing). It re-encodes the
+      requested path into a query string and redirects to the app's
+      index.html, which decodes it back via the script in index.html
+      before React Router mounts. pathSegmentsToKeep is 1 because this is
+      a project-page deploy (github.com/Githubneos/Keerthans-Portfolio ->
+      /Keerthans-Portfolio/ base path). If this repo is ever renamed to
+      Githubneos.github.io (root user-page deploy), change this to 0.
+      https://github.com/rafgraph/spa-github-pages
+    -->
+    <script type="text/javascript">
+      var pathSegmentsToKeep = 1
+      var l = window.location
+      l.replace(
+        l.protocol +
+          '//' +
+          l.hostname +
+          (l.port ? ':' + l.port : '') +
+          l.pathname
+            .split('/')
+            .slice(0, 1 + pathSegmentsToKeep)
+            .join('/') +
+          '/?/' +
+          l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash,
+      )
+    </script>
+  </head>
+  <body></body>
+</html>
