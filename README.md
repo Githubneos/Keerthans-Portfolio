@@ -1,6 +1,6 @@
 # Keerthan Karumudi — Personal Site
 
-A 5-page personal website built with Vite, React, TypeScript, Tailwind CSS v4, Framer Motion, and React Router.
+A 6-page personal website built with Vite, React, TypeScript, Tailwind CSS v4, Framer Motion, and React Router.
 
 ## Stack
 
@@ -64,6 +64,11 @@ Every page below uses clearly-marked placeholder text instead of invented facts.
 - [x] Experience entries set to real work history (Ari Tech Consulting, Foliotrend, Optix - Robotics Club), sourced from your resume
 - [x] Independent projects (Chaintrace, ride-match-, MatchWeek, Drinks and Drift) set to real descriptions from each repo's README, linking to their real public GitHub repos in `src/lib/links.ts` (`PROJECT_REPOS`)
 - [ ] Add or remove experience/project entries as your work history changes
+
+### Freelance (`src/pages/Freelance.tsx`)
+- [ ] Positioning paragraph — replace with your real freelance summary
+- [ ] Confirm/adjust the two service categories (SaaS development, Website building) if your offering changes
+- [ ] Once you have real projects to show, consider adding a "Selected freelance work" section back (with real client names, descriptions, and screenshots — not placeholders)
 
 ### Writing (`src/pages/Writing.tsx`)
 - [ ] Featured essay #1 — real title + one-line hook + link
