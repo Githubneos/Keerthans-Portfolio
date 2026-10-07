@@ -1,16 +1,17 @@
-import { Section } from '../components/Section'
-import { MagneticButton } from '../components/MagneticButton'
+import { Eyebrow, Section } from '../components/Section'
 import { EssayCard } from '../components/EssayCard'
-import { TiltPhoto } from '../components/TiltPhoto'
-import { Starfield } from '../components/Starfield'
+import { MagneticButton } from '../components/MagneticButton'
+import { PageHero } from '../components/PageHero'
+import { Aurora } from '../components/motion/Aurora'
+import { GridBackdrop } from '../components/motion/GridBackdrop'
+import { SplitText } from '../components/motion/SplitText'
 import { useLatestEssays, type Essay } from '../hooks/useLatestEssays'
 import { SOCIAL_LINKS } from '../lib/links'
-import citylightsOrbit from '../assets/citylights-orbit.jpg'
 
 const FALLBACK_ESSAYS: Essay[] = [
   {
-    title: 'Read the latest on Space Signal',
-    hook: 'New essays on AI, technology, and the world at large — updated regularly on Substack.',
+    title: 'Read the latest on Skeptical Optimist',
+    hook: 'New essays on AI, technology, and the world at large.',
     href: SOCIAL_LINKS.substack,
   },
   {
@@ -26,48 +27,31 @@ export function Writing() {
 
   return (
     <>
-      <Section tone="cream" reveal={false}>
-        <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-[1.2fr_1fr]">
-          <div>
-            <span className="inline-block rounded-sm bg-crimson px-2 py-0.5 text-xs font-medium text-ink-on-dark">
-              Writing
-            </span>
-            <h1 className="mt-4 text-3xl font-semibold text-ink md:text-5xl">Skeptical Optimist</h1>
-            <blockquote className="mt-8 max-w-[60ch] border-l-2 border-olive pl-6 font-serif-italic text-2xl italic leading-snug text-ink">
-              Interesting things that happen in the world.
-            </blockquote>
-          </div>
-          <TiltPhoto
-            src={citylightsOrbit}
-            alt="City lights seen from the International Space Station at night (NASA)"
-            accent="crimson"
-            rotate={2}
-            floatDelay={0.4}
-            className="mx-auto w-full max-w-sm"
-          />
-        </div>
-      </Section>
+      <PageHero eyebrow="Writing" title="Skeptical Optimist" gradientFrom={1} seed={79}>
+        <blockquote className="max-w-[34ch] border-l-2 border-cyan pl-6 font-serif-italic text-2xl italic leading-snug text-ink md:text-3xl">
+          Interesting things that happen in the world.
+        </blockquote>
+      </PageHero>
 
-      <Section tone="espresso" background={<Starfield />}>
-        <h2 className="text-xl font-semibold">Read the newsletter</h2>
-        <p className="mt-2 max-w-[56ch] text-ink-on-dark/80">
-          Essays on AI, technology, and the world at large — written with equal parts doubt and hope.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-4">
+      <Section tone="surface" outerClassName="border-y border-hairline" background={<Aurora className="opacity-60" />}>
+        <Eyebrow>Newsletter</Eyebrow>
+        <h2 className="mt-4 text-4xl font-bold md:text-6xl">Equal parts doubt and hope.</h2>
+        <div className="mt-8 flex flex-wrap gap-4">
           <MagneticButton href={SOCIAL_LINKS.substack} variant="primary">
             Read the archive
           </MagneticButton>
-          <MagneticButton href={SOCIAL_LINKS.substack} variant="secondary-on-dark">
+          <MagneticButton href={SOCIAL_LINKS.substack} variant="secondary">
             Subscribe
           </MagneticButton>
         </div>
       </Section>
 
-      <Section tone="cream">
-        <h2 className="text-2xl font-semibold text-ink">Featured essays</h2>
-        <div className="mt-4">
-          {essays.map((essay) => (
-            <EssayCard key={essay.href + essay.title} title={essay.title} hook={essay.hook} href={essay.href} />
+      <Section tone="base" reveal={false} background={<GridBackdrop />}>
+        <Eyebrow>Featured essays</Eyebrow>
+        <SplitText as="h2" text="Latest from the archive." className="mt-4 text-4xl font-bold md:text-6xl" />
+        <div className="mt-10 border-t border-hairline">
+          {essays.map((essay, index) => (
+            <EssayCard key={essay.href + essay.title} index={index} title={essay.title} hook={essay.hook} href={essay.href} />
           ))}
         </div>
       </Section>

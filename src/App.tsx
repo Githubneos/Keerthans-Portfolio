@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { Home } from './pages/Home'
 import { About } from './pages/About'
@@ -14,6 +14,7 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="work" element={<Work />} />
+        <Route path="foliotrend" element={<Navigate to="/work" replace />} />
         <Route path="freelance" element={<Freelance />} />
         <Route path="writing" element={<Writing />} />
         <Route path="contact" element={<Contact />} />

@@ -1,109 +1,102 @@
-import { Reveal } from '../components/Reveal'
-import { Section } from '../components/Section'
+import { motion } from 'framer-motion'
+import { MagneticButton } from '../components/MagneticButton'
+import { PageHero } from '../components/PageHero'
+import { Eyebrow, Section } from '../components/Section'
 import { TiltPhoto } from '../components/TiltPhoto'
-import { Starfield } from '../components/Starfield'
+import { Aurora } from '../components/motion/Aurora'
+import { GridBackdrop } from '../components/motion/GridBackdrop'
+import { ScrubText } from '../components/motion/SplitText'
+import { Reveal } from '../components/Reveal'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import keerthanPhoto from '../assets/keerthan-about.jpg'
 import keerthanPhoto2 from '../assets/keerthan-about-2.jpg'
 
 const FACTS = [
-  { term: 'Based in', detail: 'San Diego, CA' },
-  { term: 'Focus', detail: 'Applied AI & full-stack engineering' },
-  { term: 'Also building', detail: 'Foliotrend' },
-  { term: 'Writing', detail: 'Skeptical Optimist' },
-  { term: 'Open to', detail: 'Internships, roles, and collaborations' },
+  { icon: 'M12 21s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12zM12 11.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z', term: 'Based in', detail: 'San Diego, CA' },
+  { icon: 'M8 7l-5 5 5 5M16 7l5 5-5 5', term: 'Focus', detail: 'Applied AI & full-stack' },
+  { icon: 'M3 17l6-6 4 4 8-9M15 6h6v6', term: 'Building', detail: 'FolioTrend' },
+  { icon: 'M4 20h4l11-11-4-4L4 16v4zM13 7l4 4', term: 'Writing', detail: 'Skeptical Optimist' },
+  { icon: 'M5 12h14M13 6l6 6-6 6', term: 'Open to', detail: 'Roles & collabs' },
 ]
 
+const HOBBIES = ['Pickleball', 'Soccer', 'Cars', 'Cards']
+
 export function About() {
+  const reduced = usePrefersReducedMotion()
+
   return (
     <>
-      <Section tone="cream" reveal={false}>
-        <span className="inline-block rounded-sm bg-crimson px-2 py-0.5 text-xs font-medium text-ink-on-dark">
-          About
-        </span>
-        <h1 className="mt-4 max-w-[20ch] text-3xl font-semibold text-ink md:text-5xl">
-          Building things, betting cautiously on the future.
-        </h1>
+      <PageHero eyebrow="About" title="Hi, I'm Keerthan." gradientFrom={2} seed={31} />
 
-        <div className="mt-16 grid grid-cols-1 gap-16 md:grid-cols-[1.6fr_1fr]">
-          <Reveal>
-            <p className="max-w-[64ch] text-lg text-ink">
-              Hello! My name is Keerthan. Below you'll find some information on my background, my
-              interests, and what I've been building recently.
-            </p>
-            <p className="mt-6 max-w-[64ch] text-muted">
-              I have experience in data analysis, full-stack development, and AI applications, with a
-              special focus on intelligent systems and applications based on data. I enjoy working through
-              all phases of the process: designing an application, automating the workflow around it,
-              analyzing the data it outputs, and figuring out which AI techniques actually work and which
-              don't.
-            </p>
-            <p className="mt-4 max-w-[64ch] text-muted">
-              This is how most of my projects begin: seeing a problem and trying to solve it by building
-              something on top of it. I created Foliotrend, an AI-based investment platform with data
-              pipelines, financial analytics, portfolio management, and LLM workflows. I've also built a
-              machine learning system to predict satellite collisions, a RAG-based system for analyzing
-              legal documents, and multi-agent systems for financial analysis. Prior to all this, I worked
-              in data analytics and automation.
-            </p>
-            <p className="mt-4 max-w-[64ch] text-muted">
-              I'm fascinated by AI engineering, software engineering, data science, and the technology
-              underlying all of it. I thrive on challenges that require digging deep and thinking
-              critically, always looking for the next thing to master.
-            </p>
-            <p className="mt-4 max-w-[64ch] text-muted">
-              This combination of being skeptical of the field's marketing and optimistic about the end
-              result is precisely why I write Skeptical Optimist. I want to stay informed about the
-              bleeding edge of AI and startups, and I learn by writing about them.
-            </p>
-            <p className="mt-4 max-w-[64ch] text-muted">
-              Away from engineering, I like playing pickleball, following soccer, checking out cars I
-              shouldn't be buying, and playing cards with friends. I believe great ideas always come from
-              having a life outside your work. I'm always up for meeting someone, catching up on tech talk,
-              exchanging ideas, or learning about a project.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <div className="mb-16 max-w-[15rem] pt-2 pl-6">
-              <TiltPhoto
-                src={keerthanPhoto}
-                alt="Keerthan Karumudi standing outdoors in front of the Washington Monument"
-                accent="crimson"
-                rotate={-3}
-              />
-              <TiltPhoto
-                src={keerthanPhoto2}
-                alt="Keerthan Karumudi standing on a balcony overlooking the ocean in San Diego"
-                accent="olive"
-                rotate={3}
-                floatDelay={0.6}
-                className="-ml-14 mt-[-4.5rem] w-[85%]"
-              />
+      <Section tone="base" reveal={false} background={<Aurora className="opacity-60" />}>
+        <div className="grid items-center gap-16 md:grid-cols-[1.1fr_1fr]">
+          <div>
+            <Eyebrow>The short version</Eyebrow>
+            <ScrubText className="mt-8 max-w-[26ch] font-display text-3xl font-semibold leading-snug md:text-5xl">
+              I build intelligent systems from data to product, and bet cautiously on the future.
+            </ScrubText>
+            <div className="mt-10">
+              <MagneticButton to="/work">See the work</MagneticButton>
             </div>
-
-            <aside className="rounded-sm border border-hairline bg-surface p-6">
-              <h2 className="sr-only">Facts</h2>
-              <dl>
-                {FACTS.map((fact, index) => (
-                  <div key={fact.term} className={index > 0 ? 'mt-4' : ''}>
-                    <dt className="text-xs text-faint">{fact.term}</dt>
-                    <dd className="mt-1 text-ink">{fact.detail}</dd>
-                  </div>
-                ))}
-              </dl>
-            </aside>
-          </Reveal>
+          </div>
+          <div className="mx-auto max-w-sm pl-4">
+            <TiltPhoto src={keerthanPhoto} alt="Keerthan Karumudi standing outdoors in front of the Washington Monument" accent="violet" rotate={-3} parallax={20} />
+            <TiltPhoto
+              src={keerthanPhoto2}
+              alt="Keerthan Karumudi standing on a balcony overlooking the ocean in San Diego"
+              accent="cyan"
+              rotate={3}
+              floatDelay={0.6}
+              parallax={50}
+              className="-ml-16 -mt-20 w-[80%]"
+            />
+          </div>
         </div>
       </Section>
 
-      <Section tone="espresso" background={<Starfield />}>
-        <blockquote className="mx-auto max-w-[44ch] text-center font-serif-italic text-2xl italic leading-snug md:text-3xl">
-          <span className="mb-4 block h-0.5 w-10 mx-auto bg-olive" aria-hidden="true" />
-          "You have power over your mind, not outside events."
-          <footer className="mt-4 font-body text-sm not-italic text-ink-on-dark/70">
-            Marcus Aurelius, <cite className="not-italic">Meditations</cite>
-          </footer>
-        </blockquote>
+      <Section tone="surface" outerClassName="border-y border-hairline" reveal={false}>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+          {FACTS.map((fact, index) => (
+            <motion.div
+              key={fact.term}
+              initial={reduced ? false : { opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.08, duration: 0.6 }}
+              whileHover={reduced ? undefined : { y: -6 }}
+              className="glass flex flex-col items-center gap-3 rounded-2xl p-6 text-center"
+            >
+              <svg viewBox="0 0 24 24" className="h-9 w-9 text-cyan" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d={fact.icon} />
+              </svg>
+              <dl>
+                <dt className="mono-label text-faint">{fact.term}</dt>
+                <dd className="mt-1 font-medium text-ink">{fact.detail}</dd>
+              </dl>
+            </motion.div>
+          ))}
+        </div>
+      </Section>
+
+      <Section tone="base" reveal={false}>
+        <Eyebrow>Off the clock</Eyebrow>
+        <div className="mt-8 flex flex-wrap gap-4">
+          {HOBBIES.map((hobby, index) => (
+            <Reveal key={hobby} delay={index * 0.08} from="scale">
+              <span className="glass inline-block rounded-full px-8 py-4 font-display text-2xl font-semibold md:text-4xl">{hobby}</span>
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
+      <Section tone="surface" outerClassName="border-t border-hairline" reveal={false} background={<GridBackdrop />}>
+        <Reveal from="scale">
+          <blockquote className="mx-auto max-w-[24ch] py-10 text-center font-serif-italic text-4xl italic leading-snug md:text-6xl">
+            <span aria-hidden="true" className="mx-auto mb-8 block h-0.5 w-14 bg-linear-to-r from-violet to-cyan" />
+            "You have power over your mind, not outside events."
+            <footer className="mono-label mt-8 not-italic text-faint">Marcus Aurelius</footer>
+          </blockquote>
+        </Reveal>
       </Section>
     </>
   )

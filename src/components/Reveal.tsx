@@ -3,11 +3,13 @@ import { motion } from 'framer-motion'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 type RevealTag = 'div' | 'section'
+type From = 'up' | 'left' | 'right' | 'scale'
 
 interface RevealProps {
   children: ReactNode
   delay?: number
   as?: RevealTag
+  from?: From
   className?: string
 }
 
@@ -21,11 +23,15 @@ const PLAIN_TAGS = {
   section: 'section',
 } as const
 
-/**
- * Wrap exactly once per page section -- fade-up + blur-resolve on scroll
- * into view, never stacked with other reveals in the same section.
- */
-export function Reveal({ children, delay = 0, as = 'div', className }: RevealProps) {
+const HIDDEN = {
+  up: { opacity: 0, y: 40, filter: 'blur(10px)' },
+  left: { opacity: 0, x: -60, filter: 'blur(10px)' },
+  right: { opacity: 0, x: 60, filter: 'blur(10px)' },
+  scale: { opacity: 0, scale: 0.9, filter: 'blur(10px)' },
+} as const
+
+/** Scroll-into-view entrance: slide/scale in with a blur that resolves. Once per element. */
+export function Reveal({ children, delay = 0, as = 'div', from = 'up', className }: RevealProps) {
   const reduced = usePrefersReducedMotion()
 
   if (reduced) {
@@ -37,10 +43,10 @@ export function Reveal({ children, delay = 0, as = 'div', className }: RevealPro
   return (
     <MotionTag
       className={className}
-      initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      initial={HIDDEN[from]}
+      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: 'blur(0px)' }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </MotionTag>

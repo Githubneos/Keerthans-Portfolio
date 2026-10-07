@@ -1,6 +1,11 @@
+import { motion } from 'framer-motion'
+import { PageHero } from '../components/PageHero'
+import { Reveal } from '../components/Reveal'
 import { Section } from '../components/Section'
+import { GridBackdrop } from '../components/motion/GridBackdrop'
 import { NetworkGraphic } from '../components/NetworkGraphic'
-import { EMAIL, SOCIAL_LINKS } from '../lib/links'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
+import { EMAIL, FOLIOTREND_URL, SOCIAL_LINKS } from '../lib/links'
 
 const SOCIAL_ROWS = [
   { label: 'Email', value: EMAIL, href: `mailto:${EMAIL}` },
@@ -9,98 +14,87 @@ const SOCIAL_ROWS = [
   { label: 'X', value: '@humblelime', href: SOCIAL_LINKS.x },
   { label: 'Instagram', value: 'keerthan.karumudi', href: SOCIAL_LINKS.instagram },
   { label: 'Substack', value: 'Skeptical Optimist', href: SOCIAL_LINKS.substack },
+  { label: 'FolioTrend', value: 'foliotrend.com', href: FOLIOTREND_URL },
 ]
 
+const FIELD =
+  'mt-1 w-full rounded-xl border border-hairline bg-white/3 px-4 py-3.5 text-ink transition-[border-color,box-shadow] duration-200 focus:border-cyan focus:shadow-[0_0_0_4px_rgb(61_224_255/12%)] focus:outline-none'
+
 export function Contact() {
+  const reduced = usePrefersReducedMotion()
+
   return (
-    <Section tone="cream" reveal={false}>
-      <span className="inline-block rounded-sm bg-crimson px-2 py-0.5 text-xs font-medium text-ink-on-dark">
-        Contact
-      </span>
-      <h1 className="mt-4 text-3xl font-semibold text-ink md:text-5xl">Let's talk.</h1>
-      <p className="mt-4 max-w-[56ch] text-lg text-muted">
-        Whether it's a consulting question, a project idea, or a note about something you read on Skeptical
-        Optimist — reach out.
-      </p>
+    <>
+      <PageHero eyebrow="Contact" title="Let's talk." gradientFrom={1} seed={91}>
+        <p className="font-display text-2xl text-muted md:text-3xl">Project, question, or hello.</p>
+      </PageHero>
 
-      <div className="mt-16 grid grid-cols-1 gap-14 md:grid-cols-[1.3fr_1fr]">
-        <div>
-          {/*
-            GitHub Pages serves static files only — there is no server to
-            receive this form submission. To make it work in about 5
-            minutes, sign up at https://formspree.io, create a form, and
-            set the form's action below to your Formspree endpoint
-            (e.g. https://formspree.io/f/your-form-id) with method="POST".
-          */}
-          <form action="#" method="POST" className="flex flex-col gap-6">
-            <div>
-              <label htmlFor="name" className="block text-sm text-muted">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                autoComplete="name"
-                required
-                className="mt-1.5 w-full border-0 border-b-2 border-hairline bg-transparent px-0.5 py-2.5 text-ink focus:border-crimson focus:outline-none"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm text-muted">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                autoComplete="email"
-                required
-                className="mt-1.5 w-full border-0 border-b-2 border-hairline bg-transparent px-0.5 py-2.5 text-ink focus:border-crimson focus:outline-none"
-              />
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-sm text-muted">
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={6}
-                className="mt-1.5 w-full resize-y border-0 border-b-2 border-hairline bg-transparent px-0.5 py-2.5 text-ink focus:border-crimson focus:outline-none"
-              />
-            </div>
-            <button
-              type="submit"
-              className="mt-1 inline-flex items-center gap-2 self-start rounded-sm bg-crimson px-6 py-3 font-display text-sm font-medium text-ink-on-dark transition-colors duration-150 hover:bg-crimson-text"
-            >
-              Send message
-            </button>
-          </form>
+      <Section tone="base" reveal={false} background={<GridBackdrop />}>
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-[1.3fr_1fr]">
+          <Reveal from="left">
+            {/*
+              GitHub Pages serves static files only — there is no server to
+              receive this form submission. To make it work in about 5
+              minutes, sign up at https://formspree.io, create a form, and
+              set the form's action below to your Formspree endpoint
+              (e.g. https://formspree.io/f/your-form-id) with method="POST".
+            */}
+            <form action="#" method="POST" className="glass flex flex-col gap-6 rounded-3xl p-8">
+              <div>
+                <label htmlFor="name" className="mono-label text-faint">
+                  Name
+                </label>
+                <input type="text" id="name" name="name" autoComplete="name" required className={FIELD} />
+              </div>
+              <div>
+                <label htmlFor="email" className="mono-label text-faint">
+                  Email
+                </label>
+                <input type="email" id="email" name="email" autoComplete="email" required className={FIELD} />
+              </div>
+              <div>
+                <label htmlFor="message" className="mono-label text-faint">
+                  Message
+                </label>
+                <textarea id="message" name="message" required rows={6} className={`${FIELD} resize-y`} />
+              </div>
+              <motion.button
+                type="submit"
+                whileTap={reduced ? undefined : { scale: 0.97 }}
+                className="inline-flex min-h-12 items-center gap-2 self-start rounded-full bg-linear-to-r from-violet to-cyan px-8 py-3 font-display text-sm font-semibold text-bg shadow-[0_0_30px_-4px_rgb(139_124_255/60%)] transition-shadow duration-300 hover:shadow-[0_0_44px_0_rgb(61_224_255/55%)]"
+              >
+                Send message →
+              </motion.button>
+            </form>
+          </Reveal>
+
+          <Reveal from="right">
+            <aside>
+              <NetworkGraphic className="mb-8 h-auto w-full max-w-[180px] text-cyan" />
+              <ul>
+                {SOCIAL_ROWS.map((row) => (
+                  <li key={row.label} className="border-b border-hairline">
+                    <a
+                      href={row.href}
+                      target={row.href.startsWith('http') ? '_blank' : undefined}
+                      rel={row.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      className="group flex min-h-12 items-center justify-between gap-4 py-3.5 text-ink transition-all duration-300 hover:pl-3 hover:text-cyan"
+                    >
+                      {row.label}
+                      <span className="flex items-center gap-2 text-sm text-faint transition-colors group-hover:text-cyan">
+                        {row.value}
+                        <span aria-hidden="true" className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+                          ↗
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </Reveal>
         </div>
-
-        <aside>
-          <NetworkGraphic className="mb-8 h-auto w-full max-w-[180px] text-ink" />
-          <ul>
-            {SOCIAL_ROWS.map((row) => (
-              <li key={row.label} className="border-b border-hairline first:pt-0">
-                <a
-                  href={row.href}
-                  target={row.href.startsWith('http') ? '_blank' : undefined}
-                  rel={row.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="group flex justify-between px-0.5 py-3.5 text-ink transition-colors duration-150 hover:bg-espresso hover:text-ink-on-dark hover:px-3"
-                >
-                  {row.label}
-                  <span className="text-sm text-faint transition-colors duration-150 group-hover:text-ink-on-dark/70">
-                    {row.value}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      </div>
-    </Section>
+      </Section>
+    </>
   )
 }

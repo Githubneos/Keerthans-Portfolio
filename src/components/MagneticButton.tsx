@@ -7,7 +7,7 @@ const MotionLink = motion.create(Link)
 
 interface BaseProps {
   children: ReactNode
-  variant?: 'primary' | 'secondary' | 'secondary-on-dark'
+  variant?: 'primary' | 'secondary'
   className?: string
 }
 
@@ -16,34 +16,48 @@ type MagneticButtonProps =
   | (BaseProps & { href: string; to?: never })
 
 const VARIANT_CLASSES = {
-  primary: 'bg-crimson text-ink-on-dark hover:bg-crimson-text',
-  secondary: 'bg-transparent text-ink border border-hairline hover:border-crimson hover:text-crimson-text',
-  'secondary-on-dark':
-    'bg-transparent text-ink-on-dark border border-hairline-on-dark hover:border-olive hover:text-olive',
+  primary:
+    'bg-linear-to-r from-violet to-cyan text-bg shadow-[0_0_30px_-4px_rgb(139_124_255/60%)] hover:shadow-[0_0_44px_0_rgb(61_224_255/55%)]',
+  secondary: 'glass text-ink hover:border-cyan hover:text-cyan',
 } as const
 
 const BASE_CLASSES =
-  'inline-flex items-center gap-2 rounded-sm px-6 py-3 font-display font-medium text-sm transition-colors duration-150'
+  'group inline-flex min-h-11 items-center gap-2.5 rounded-full px-7 py-3 font-display text-sm font-semibold transition-[box-shadow,color,border-color] duration-300'
+
+function Arrow() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 8h10M9 4l4 4-4 4" />
+    </svg>
+  )
+}
 
 /**
- * Magnetic hover pull toward the cursor via useMotionValue/useSpring
- * (never useState, to avoid a re-render on every mousemove). No-ops
- * under prefers-reduced-motion; the tap-press scale still applies since
- * it's a discrete interaction, not ambient motion.
+ * Pill button that is pulled toward the cursor (useMotionValue/useSpring, no
+ * re-renders on mousemove). Magnetism no-ops under prefers-reduced-motion.
  */
 export function MagneticButton({ children, variant = 'primary', className, ...linkProps }: MagneticButtonProps) {
   const reduced = usePrefersReducedMotion()
   const ref = useRef<HTMLAnchorElement>(null)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
-  const springX = useSpring(x, { stiffness: 200, damping: 20, mass: 0.5 })
-  const springY = useSpring(y, { stiffness: 200, damping: 20, mass: 0.5 })
+  const springX = useSpring(x, { stiffness: 200, damping: 18, mass: 0.5 })
+  const springY = useSpring(y, { stiffness: 200, damping: 18, mass: 0.5 })
 
   function handleMouseMove(event: React.MouseEvent<HTMLAnchorElement>) {
     if (reduced || !ref.current) return
     const rect = ref.current.getBoundingClientRect()
-    x.set((event.clientX - (rect.left + rect.width / 2)) * 0.3)
-    y.set((event.clientY - (rect.top + rect.height / 2)) * 0.3)
+    x.set((event.clientX - (rect.left + rect.width / 2)) * 0.35)
+    y.set((event.clientY - (rect.top + rect.height / 2)) * 0.35)
   }
 
   function handleMouseLeave() {
@@ -61,11 +75,12 @@ export function MagneticButton({ children, variant = 'primary', className, ...li
         to={linkProps.to}
         className={classes}
         style={{ x: springX, y: springY }}
-        whileTap={{ scale: 0.98 }}
+        whileTap={{ scale: 0.97 }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
         {children}
+        <Arrow />
       </MotionLink>
     )
   }
@@ -76,12 +91,13 @@ export function MagneticButton({ children, variant = 'primary', className, ...li
       href={'href' in linkProps ? linkProps.href : undefined}
       className={classes}
       style={{ x: springX, y: springY }}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ scale: 0.97 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       {...externalProps}
     >
       {children}
+      <Arrow />
     </motion.a>
   )
 }

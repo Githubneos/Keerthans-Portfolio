@@ -8,6 +8,8 @@ export const SOCIAL_LINKS = {
   substack: 'https://substack.com/@skepticaloptimist1',
 } as const
 
+export const FOLIOTREND_URL = 'https://foliotrend.com'
+
 export const SUBSTACK_FEED_URL = 'https://spacesignal1.substack.com/feed'
 
 export const RSS_TO_JSON_URL = (feedUrl: string) =>
@@ -17,5 +19,6 @@ export const PROJECT_REPOS = {
   chaintrace: 'https://github.com/Githubneos/Chaintrace',
   rideMatch: 'https://github.com/Githubneos/ride-match-',
   matchWeek: 'https://github.com/Githubneos/MatchWeek',
+  aiCompanyEvaluator: 'https://github.com/Githubneos/AI-company-evaluator',
   drinksAndDrifts: 'https://github.com/Githubneos/Drinks-and-Drifts',
 } as const
