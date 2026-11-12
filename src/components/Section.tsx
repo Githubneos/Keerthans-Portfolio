@@ -1,65 +1,53 @@
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { Reveal } from './Reveal'
 
-type Tone = 'base' | 'surface' | 'raised'
-
-const TONE_CLASSES: Record<Tone, string> = {
-  base: 'bg-bg text-ink',
-  surface: 'bg-surface text-ink',
-  raised: 'bg-surface-raised text-ink',
-}
-
-interface SectionProps {
-  children: ReactNode
-  tone?: Tone
-  delay?: number
-  /** false for heroes and sections that choreograph their own motion */
-  reveal?: boolean
-  /** extra classes on the inner max-width container */
-  className?: string
-  /** extra classes on the full-bleed outer band */
-  outerClassName?: string
-  /** drop the default vertical padding (for pinned/sticky sections) */
-  flush?: boolean
-  id?: string
-  /** decorative layer (Starfield, Aurora) rendered behind the content */
-  background?: ReactNode
-}
-
-/** Small mono label with a glowing gradient dot, used above headlines. */
-export function Eyebrow({ children }: { children: ReactNode }) {
+/** Museum-label caption with a hairline rule and a Roman plate number. */
+export function Eyebrow({ children, numeral, className = 'text-muted', onDark = false }: { children: ReactNode; numeral?: string; className?: string; onDark?: boolean }) {
   return (
-    <span className="mono-label inline-flex items-center gap-2.5 text-cyan">
-      <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-cyan shadow-[0_0_12px_2px_rgb(61_224_255/70%)]" />
+    <span className={`plaque inline-flex items-center gap-3 ${onDark ? 'text-white/85' : className}`}>
+      <span aria-hidden="true" className={`h-1.5 w-10 rounded-full ${onDark ? 'stripes-gold' : 'stripes'}`} />
+      {numeral && <span className={`font-display text-sm normal-case tracking-normal ${onDark ? 'text-gold' : 'text-burgundy'}`}>{numeral}</span>}
       {children}
     </span>
   )
 }
 
-/** Full-bleed band with an inset max-width container. */
-export function Section({
-  children,
-  tone = 'base',
-  delay = 0,
-  reveal = true,
-  className,
-  outerClassName,
-  flush,
-  id,
-  background,
-}: SectionProps) {
-  const content = reveal ? (
-    <Reveal delay={delay} className={className}>
-      {children}
-    </Reveal>
-  ) : (
-    <div className={className}>{children}</div>
-  )
+interface SectionProps {
+  id: string
+  numeral: string
+  label: string
+  title: string
+  children: ReactNode
+}
+
+/** One plate of the page: numbered label, serif heading, content. Sits on the live background. */
+export function Section({ id, numeral, label, title, children }: SectionProps) {
+  const ref = useRef<HTMLElement>(null)
+  const reduced = usePrefersReducedMotion()
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  // The giant outline numeral drifts slower than the page, so it feels like it sits behind the content.
+  const y = useTransform(scrollYProgress, [0, 1], [120, -160])
 
   return (
-    <section id={id} className={`relative ${flush ? '' : 'overflow-hidden'} ${TONE_CLASSES[tone]} ${outerClassName ?? ''}`}>
-      {background}
-      <div className={`relative z-10 mx-auto max-w-(--content-max) px-6 ${flush ? '' : 'py-24 md:py-32'}`}>{content}</div>
+    <section ref={ref} id={id} aria-labelledby={`${id}-title`} className="relative scroll-mt-16 overflow-x-clip py-20 md:py-28">
+      <motion.span
+        aria-hidden="true"
+        style={reduced ? undefined : { y }}
+        className="pointer-events-none absolute right-[-2%] top-10 select-none font-display text-[clamp(9rem,26vw,22rem)] leading-none text-transparent opacity-40 [-webkit-text-stroke:2px_var(--color-mist)]"
+      >
+        {numeral}
+      </motion.span>
+      <div className="relative mx-auto max-w-(--content-max) px-6">
+        <Reveal>
+          <Eyebrow numeral={numeral}>{label}</Eyebrow>
+          <h2 id={`${id}-title`} className="mt-5 max-w-[20ch] text-5xl md:text-7xl">
+            {title}
+          </h2>
+        </Reveal>
+        <div className="mt-12 md:mt-16">{children}</div>
+      </div>
     </section>
   )
 }

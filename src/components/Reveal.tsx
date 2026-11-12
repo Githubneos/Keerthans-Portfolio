@@ -13,24 +13,17 @@ interface RevealProps {
   className?: string
 }
 
-const MOTION_TAGS = {
-  div: motion.div,
-  section: motion.section,
-} as const
-
-const PLAIN_TAGS = {
-  div: 'div',
-  section: 'section',
-} as const
+const MOTION_TAGS = { div: motion.div, section: motion.section } as const
+const PLAIN_TAGS = { div: 'div', section: 'section' } as const
 
 const HIDDEN = {
-  up: { opacity: 0, y: 40, filter: 'blur(10px)' },
-  left: { opacity: 0, x: -60, filter: 'blur(10px)' },
-  right: { opacity: 0, x: 60, filter: 'blur(10px)' },
-  scale: { opacity: 0, scale: 0.9, filter: 'blur(10px)' },
+  up: { opacity: 0, y: 36 },
+  left: { opacity: 0, x: -48 },
+  right: { opacity: 0, x: 48 },
+  scale: { opacity: 0, scale: 0.94 },
 } as const
 
-/** Scroll-into-view entrance: slide/scale in with a blur that resolves. Once per element. */
+/** Scroll-into-view entrance: a calm gallery-style rise. Once per element. */
 export function Reveal({ children, delay = 0, as = 'div', from = 'up', className }: RevealProps) {
   const reduced = usePrefersReducedMotion()
 
@@ -44,7 +37,7 @@ export function Reveal({ children, delay = 0, as = 'div', from = 'up', className
     <MotionTag
       className={className}
       initial={HIDDEN[from]}
-      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: 'blur(0px)' }}
+      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
     >

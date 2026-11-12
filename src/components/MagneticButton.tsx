@@ -7,35 +7,26 @@ const MotionLink = motion.create(Link)
 
 interface BaseProps {
   children: ReactNode
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'light'
   className?: string
 }
 
-type MagneticButtonProps =
-  | (BaseProps & { to: string; href?: never })
-  | (BaseProps & { href: string; to?: never })
+type MagneticButtonProps = (BaseProps & { to: string; href?: never }) | (BaseProps & { href: string; to?: never })
 
-const VARIANT_CLASSES = {
-  primary:
-    'bg-linear-to-r from-violet to-cyan text-bg shadow-[0_0_30px_-4px_rgb(139_124_255/60%)] hover:shadow-[0_0_44px_0_rgb(61_224_255/55%)]',
-  secondary: 'glass text-ink hover:border-cyan hover:text-cyan',
+// eslint-disable-next-line react-refresh/only-export-components
+export const VARIANT_CLASSES = {
+  primary: 'bg-burgundy text-white hover:bg-burgundy-deep',
+  secondary: 'border border-mist bg-white-wall text-navy hover:border-navy',
+  light: 'bg-paper text-navy hover:bg-white-wall',
 } as const
 
-const BASE_CLASSES =
-  'group inline-flex min-h-11 items-center gap-2.5 rounded-full px-7 py-3 font-display text-sm font-semibold transition-[box-shadow,color,border-color] duration-300'
+// eslint-disable-next-line react-refresh/only-export-components
+export const BASE_CLASSES =
+  'group inline-flex min-h-12 items-center gap-2.5 rounded-full px-7 py-3 text-sm font-medium transition-colors duration-300'
 
 function Arrow() {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 16 16"
-      className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg aria-hidden="true" viewBox="0 0 16 16" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M3 8h10M9 4l4 4-4 4" />
     </svg>
   )
@@ -56,8 +47,8 @@ export function MagneticButton({ children, variant = 'primary', className, ...li
   function handleMouseMove(event: React.MouseEvent<HTMLAnchorElement>) {
     if (reduced || !ref.current) return
     const rect = ref.current.getBoundingClientRect()
-    x.set((event.clientX - (rect.left + rect.width / 2)) * 0.35)
-    y.set((event.clientY - (rect.top + rect.height / 2)) * 0.35)
+    x.set((event.clientX - (rect.left + rect.width / 2)) * 0.3)
+    y.set((event.clientY - (rect.top + rect.height / 2)) * 0.3)
   }
 
   function handleMouseLeave() {
@@ -70,15 +61,7 @@ export function MagneticButton({ children, variant = 'primary', className, ...li
 
   if ('to' in linkProps && linkProps.to) {
     return (
-      <MotionLink
-        ref={ref}
-        to={linkProps.to}
-        className={classes}
-        style={{ x: springX, y: springY }}
-        whileTap={{ scale: 0.97 }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
+      <MotionLink ref={ref} to={linkProps.to} className={classes} style={{ x: springX, y: springY }} whileTap={{ scale: 0.97 }} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
         {children}
         <Arrow />
       </MotionLink>
@@ -86,16 +69,7 @@ export function MagneticButton({ children, variant = 'primary', className, ...li
   }
 
   return (
-    <motion.a
-      ref={ref}
-      href={'href' in linkProps ? linkProps.href : undefined}
-      className={classes}
-      style={{ x: springX, y: springY }}
-      whileTap={{ scale: 0.97 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      {...externalProps}
-    >
+    <motion.a ref={ref} href={'href' in linkProps ? linkProps.href : undefined} className={classes} style={{ x: springX, y: springY }} whileTap={{ scale: 0.97 }} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} {...externalProps}>
       {children}
       <Arrow />
     </motion.a>

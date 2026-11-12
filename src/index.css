@@ -1,45 +1,71 @@
 @import "tailwindcss";
 
+/*
+ * THE EXHIBITION, BLAUGRANA EDITION
+ * A gallery for an engineer, dressed in the colours of FC Barcelona:
+ * burgundy (garnet) and royal blue stripes, deep-navy ink, gold highlights.
+ * Warm paper walls, Prata serif display type, museum-label captions.
+ */
 @theme {
-  /* surfaces (dark, cinematic) */
-  --color-bg: #0b1014;
-  --color-surface: #10171f;
-  --color-surface-raised: #17202b;
+  /* walls */
+  --color-paper: #faf8f5;
+  --color-linen: #f2eee6;
+  --color-white-wall: #ffffff;
+  --color-deep: #0a1f4a; /* dark navy room */
+  --color-deep-2: #061434;
 
-  /* text */
-  --color-ink: #eef1f8;
-  --color-muted: #a3adc4; /* 8.5:1 on bg */
-  --color-faint: #8892ab; /* 5.6:1 on bg */
+  /* ink */
+  --color-ink: #0b1630;
+  --color-navy: #0c2250;
+  --color-muted: #434d68; /* 8:1 on paper */
+  --color-faint: #5f6983; /* 5.4:1 on paper */
 
-  /* accents */
-  --color-violet: #8b7cff;
-  --color-cyan: #3de0ff;
-  --color-signal: #4ade80;
-  --color-ember: #ff8a5b;
+  /* the kit */
+  --color-burgundy: #a50044; /* garnet: primary accent */
+  --color-burgundy-deep: #7d0034;
+  --color-royal: #004d98; /* blue stripe */
+  --color-gold: #edbb00;
+  --color-gold-dark: #8a6a00; /* gold you can read as text */
+  --color-mist: #b9c7de;
 
   /* hairlines */
-  --color-hairline: rgb(255 255 255 / 10%);
-  --color-hairline-strong: rgb(255 255 255 / 20%);
+  --color-hairline: rgb(12 34 80 / 14%);
+  --color-hairline-strong: rgb(12 34 80 / 28%);
 
   /* type */
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Prata", ui-serif, Georgia, "Times New Roman", serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif-italic: "Source Serif 4 Variable", ui-serif, Georgia, serif;
-  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
 
-  --content-max: 74rem;
+  --shadow-plate: 0 1px 0 rgb(255 255 255 / 80%) inset, 0 24px 48px -28px rgb(11 22 48 / 38%), 0 2px 6px -2px rgb(11 22 48 / 14%);
+
+  --content-max: 76rem;
 }
 
 @layer base {
   html {
-    color-scheme: dark;
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 4rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  dialog[open] {
+    animation: dialog-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   body {
-    background-color: var(--color-bg);
+    background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
     overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1,
@@ -47,15 +73,22 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   ::selection {
-    background: rgb(139 124 255 / 45%);
+    background: rgb(237 187 0 / 40%);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-cyan);
+    outline: 2px solid var(--color-burgundy);
     outline-offset: 3px;
   }
 
@@ -67,102 +100,82 @@
 }
 
 @layer utilities {
-  .grad-text {
-    background-image: linear-gradient(100deg, var(--color-violet), var(--color-cyan) 55%, var(--color-signal), var(--color-violet));
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: grad-shift 8s linear infinite;
-  }
-
-  .outline-text {
-    color: transparent;
-    -webkit-text-stroke: 1.5px rgb(255 255 255 / 35%);
-  }
-
-  .glass {
-    background: linear-gradient(145deg, rgb(255 255 255 / 7%), rgb(255 255 255 / 2%));
-    border: 1px solid var(--color-hairline);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-
-  .mono-label {
-    font-family: var(--font-mono);
+  /* Museum-label caption: tiny, tracked, uppercase. */
+  .plaque {
+    font-family: var(--font-body);
     font-size: 0.72rem;
-    letter-spacing: 0.14em;
+    font-weight: 500;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
   }
 
+  .plate {
+    background: var(--color-white-wall);
+    border: 1px solid var(--color-hairline);
+    box-shadow: var(--shadow-plate);
+  }
+
+  /* On dark (deep) rooms */
+  .plate-dark {
+    background: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 14%);
+  }
+
+  /* Kit stripes: the blaugrana pattern, used as the site's recurring livery. */
+  .stripes {
+    background-image: repeating-linear-gradient(90deg, var(--color-royal) 0 6px, var(--color-burgundy) 6px 12px);
+  }
+
+  /* A card with a kit-stripe top edge */
+  .plate-kit {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .plate-kit::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 6px;
+    background-image: repeating-linear-gradient(90deg, var(--color-royal) 0 24px, var(--color-burgundy) 24px 48px);
+  }
+
+  .stripes-gold {
+    background-image: linear-gradient(90deg, var(--color-royal) 0 33.3%, var(--color-gold) 33.3% 66.6%, var(--color-burgundy) 66.6% 100%);
+  }
+
   .animate-marquee {
-    animation: marquee 38s linear infinite;
+    animation: marquee 46s linear infinite;
   }
 
-  .animate-aurora {
-    animation: aurora-drift 18s ease-in-out infinite;
+  .animate-float {
+    animation: float 7s ease-in-out infinite;
   }
 
-  .animate-shoot {
-    animation: shoot 6s ease-in infinite;
-  }
-
-  .animate-dash {
-    animation: dash 1.6s linear infinite;
-  }
-
-  .animate-scan {
-    animation: scan 7s linear infinite;
-  }
-
-  .grid-bg {
-    background-image:
-      linear-gradient(rgb(255 255 255 / 5%) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(255 255 255 / 5%) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 100%);
+  .preserve-3d {
+    transform-style: preserve-3d;
   }
 }
 
-@keyframes dash {
-  to {
-    stroke-dashoffset: -16;
-  }
-}
-
-@keyframes scan {
+@keyframes scroll-cue {
   from {
     transform: translateY(-100%);
   }
   to {
-    transform: translateY(1400%);
+    transform: translateY(200%);
   }
 }
 
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 60;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
-@keyframes grad-shift {
-  to {
-    background-position: 200% center;
-  }
-}
-
-@keyframes aurora-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
+@keyframes blink {
   50% {
-    transform: translate3d(4%, -6%, 0) scale(1.15);
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
   }
 }
 
@@ -172,28 +185,19 @@ body::after {
   }
 }
 
-@keyframes shoot {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(35deg);
-    opacity: 0;
-  }
-  8% {
-    opacity: 1;
-  }
-  60%,
+@keyframes float {
+  0%,
   100% {
-    transform: translate3d(520px, 364px, 0) rotate(35deg);
-    opacity: 0;
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .grad-text,
   .animate-marquee,
-  .animate-aurora,
-  .animate-shoot,
-  .animate-dash,
-  .animate-scan {
+  .animate-float {
     animation: none;
   }
 }
